@@ -1,10 +1,13 @@
 package com.tensquare.qa.service;
 
 import com.tensquare.qa.dao.ProblemDao;
+import com.tensquare.qa.dao.ViewInfoDao;
 import com.tensquare.qa.pojo.Problem;
+import com.tensquare.qa.pojo.ViewInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
@@ -28,9 +31,37 @@ public class ProblemService {
 
 	@Autowired
 	private ProblemDao problemDao;
-	
+
+	@Autowired
+	private ViewInfoDao viewInfoDao;
+
 	@Autowired
 	private IdWorker idWorker;
+
+	/**
+	 *  查询最新回答列表
+	 */
+	public Page<ViewInfo> newList(String labelId,int page,int size){
+		Pageable pageable = PageRequest.of(page-1,size);
+		Page<ViewInfo> datas = viewInfoDao.newList(labelId, pageable);
+		return datas;
+	}
+
+	/**
+	 * 查询热门回答列表
+	 */
+	public Page<Object> hotList(String labelId,int page,int size){
+		Pageable pageable = PageRequest.of(page-1,size);
+		return viewInfoDao.hotList(labelId, pageable);
+	}
+
+	/**
+	 * 查询等待回答列表
+	 */
+	public Page<ViewInfo> waitList(String labelId,int page,int size){
+		Pageable pageable = PageRequest.of(page-1,size);
+		return viewInfoDao.waitList(labelId, pageable);
+	}
 
 	/**
 	 * 查询全部列表
@@ -40,7 +71,7 @@ public class ProblemService {
 		return problemDao.findAll();
 	}
 
-	
+
 	/**
 	 * 条件查询+分页
 	 * @param whereMap
@@ -54,7 +85,7 @@ public class ProblemService {
 		return problemDao.findAll(specification, pageRequest);
 	}
 
-	
+
 	/**
 	 * 条件查询
 	 * @param whereMap
@@ -139,7 +170,7 @@ public class ProblemService {
                 if (searchMap.get("replyname")!=null && !"".equals(searchMap.get("replyname"))) {
                 	predicateList.add(cb.like(root.get("replyname").as(String.class), "%"+(String)searchMap.get("replyname")+"%"));
                 }
-				
+
 				return cb.and( predicateList.toArray(new Predicate[predicateList.size()]));
 
 			}

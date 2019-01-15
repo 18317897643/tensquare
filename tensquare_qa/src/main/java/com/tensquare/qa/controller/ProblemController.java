@@ -1,5 +1,7 @@
 package com.tensquare.qa.controller;
+
 import com.tensquare.qa.pojo.Problem;
+import com.tensquare.qa.pojo.ViewInfo;
 import com.tensquare.qa.service.ProblemService;
 import entity.PageResult;
 import entity.Result;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
 /**
  * 控制器层
  * @author Administrator
@@ -23,8 +26,28 @@ public class ProblemController {
 
 	@Autowired
 	private ProblemService problemService;
-	
-	
+
+	@RequestMapping(value = "/newlist/{label}/{page}/{size}",method = RequestMethod.GET)
+	public Result newList(@PathVariable String label,@PathVariable int page, @PathVariable int size){
+		Page<ViewInfo> infos = problemService.newList(label, page, size);
+		PageResult<ViewInfo> pageResult = new PageResult<ViewInfo>(infos.getTotalElements(),infos.getContent());
+		return new Result(true,StatusCode.OK,"查询成功",pageResult);
+	}
+
+	@RequestMapping(value = "/hotList/{label}/{page}/{size}",method = RequestMethod.GET)
+	public Result hotList(@PathVariable String label,@PathVariable int page, @PathVariable int size){
+		Page<Object> infos = problemService.hotList(label, page, size);
+		PageResult<Object> pageResult = new PageResult<Object>(infos.getTotalElements(),infos.getContent());
+		return new Result(true,StatusCode.OK,"查询成功",pageResult);
+	}
+
+	@RequestMapping(value = "/waitList/{label}/{page}/{size}",method = RequestMethod.GET)
+	public Result waitList(@PathVariable String label,@PathVariable int page, @PathVariable int size){
+		Page<ViewInfo> infos = problemService.waitList(label, page, size);
+		PageResult<ViewInfo> pageResult = new PageResult<ViewInfo>(infos.getTotalElements(),infos.getContent());
+		return new Result(true,StatusCode.OK,"查询成功",pageResult);
+	}
+
 	/**
 	 * 查询全部数据
 	 * @return
@@ -33,7 +56,7 @@ public class ProblemController {
 	public Result findAll(){
 		return new Result(true,StatusCode.OK,"查询成功",problemService.findAll());
 	}
-	
+
 	/**
 	 * 根据ID查询
 	 * @param id ID
@@ -67,7 +90,7 @@ public class ProblemController {
     public Result findSearch( @RequestBody Map searchMap){
         return new Result(true,StatusCode.OK,"查询成功",problemService.findSearch(searchMap));
     }
-	
+
 	/**
 	 * 增加
 	 * @param problem
@@ -77,7 +100,7 @@ public class ProblemController {
 		problemService.add(problem);
 		return new Result(true,StatusCode.OK,"增加成功");
 	}
-	
+
 	/**
 	 * 修改
 	 * @param problem
@@ -85,10 +108,10 @@ public class ProblemController {
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
 	public Result update(@RequestBody Problem problem, @PathVariable String id ){
 		problem.setId(id);
-		problemService.update(problem);		
+		problemService.update(problem);
 		return new Result(true,StatusCode.OK,"修改成功");
 	}
-	
+
 	/**
 	 * 删除
 	 * @param id

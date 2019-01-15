@@ -2,11 +2,21 @@ package com.tensquare.qa.pojo;
 
 import lombok.Data;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
+@Entity
+@Table(name = "v_p_l")
 public class ViewInfo implements Serializable {
+    @Id
+    private String id;
+    @Embedded
     private Label label;
+    @Embedded
     private Problem problem;
 
     public ViewInfo() {

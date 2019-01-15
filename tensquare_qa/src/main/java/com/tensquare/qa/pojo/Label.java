@@ -1,8 +1,6 @@
 package com.tensquare.qa.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -10,11 +8,14 @@ import java.io.Serializable;
  * @author Administrator
  *
  */
+@Embeddable
+@Access(AccessType.FIELD)
 @Entity
 @Table(name="tb_label")
 public class Label implements Serializable{
 
 	@Id
+	@Column(name = "lid")
 	private String id;//标签ID
 
 

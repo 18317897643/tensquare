@@ -1,14 +1,14 @@
 package com.tensquare.qa.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 /**
  * 实体类
  * @author Administrator
  *
  */
+@Embeddable
+@Access(AccessType.FIELD)
 @Entity
 @Table(name="tb_problem")
 public class Problem implements Serializable{
