@@ -11,6 +11,9 @@
         <module>tensquare_base</module>
         <module>tensquare_recruit</module>
         <module>tensquare_qa</module>
+        <module>tensquare_article</module>
+        <module>tensquare_gathering</module>
+        <module>tensquare_spit</module>
     </modules>
     <packaging>pom</packaging>
 	<name>tensquare_parent</name>
@@ -38,7 +41,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
